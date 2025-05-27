@@ -1,0 +1,549 @@
+/* Home Page Styles */
+
+/* Container */
+.home-container {
+    min-height: 100vh;
+    background-color: #f8f9fa;
+  }
+
+  
+  /* Header */
+  .home-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 2rem 0;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    
+  }
+  
+  .header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    
+  }
+  
+  .welcome-message {
+    font-size: 2rem;
+    font-weight: 600;
+    margin: 0;
+  }
+  
+  .header-actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+  
+  /* Buttons */
+  .btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+  
+  .btn-primary {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .btn-primary:hover {
+    background-color: #0056b3;
+    transform: translateY(-1px);
+  }
+  
+  .btn-secondary {
+    background-color: #6c757d;
+    color: white;
+  }
+  
+  .btn-secondary:hover {
+    background-color: #545b62;
+    transform: translateY(-1px);
+  }
+  
+  .btn-danger {
+    background-color: #dc3545;
+    color: white;
+  }
+  
+  .btn-danger:hover {
+    background-color: #c82333;
+    transform: translateY(-1px);
+  }
+  
+  .btn-outline {
+    background-color: transparent;
+    border: 1px solid #007bff;
+    color: #007bff;
+  }
+  
+  .btn-outline:hover {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  /* Search Section */
+  .search-section {
+    padding: 1.5rem 0;
+    background-color: white;
+    border-bottom: 1px solid #e9ecef;
+  }
+  
+  .search-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    position: relative;
+  }
+  
+  .search-input {
+    width: 100%;
+    padding: 0.75rem 2.5rem 0.75rem 1rem;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+  }
+  
+  .search-input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+  }
+  
+  .clear-search-btn {
+    position: absolute;
+    right: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #6c757d;
+    transition: color 0.3s ease;
+  }
+  
+  .clear-search-btn:hover {
+    color: #dc3545;
+  }
+  
+  /* Loading and Error States */
+  .loading-state, .error-state {
+    text-align: center;
+    padding: 3rem 1rem;
+  }
+  
+  .loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #007bff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1rem;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  .error-message {
+    color: #dc3545;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+  
+  /* Main Content */
+  .home-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+  }
+  
+  .section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: #2c3e50;
+  }
+  
+  /* Stories Section */
+  .stories-list {
+    display: grid;
+    gap: 1.5rem;
+  }
+  
+  .story-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 1rem;
+  }
+  
+  .story-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  }
+  
+  .story-image {
+    width: 200px;
+    height: 150px;
+    overflow: hidden;
+  }
+  
+  .story-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+  
+  .story-card:hover .story-image img {
+    transform: scale(1.05);
+  }
+  
+  .story-content {
+    padding: 1rem 1rem 1rem 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .story-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+    color: #2c3e50;
+    line-height: 1.4;
+  }
+  
+  .story-description {
+    color: #555;
+    line-height: 1.6;
+    margin: 0 0 1rem 0;
+    flex-grow: 1;
+  }
+  
+  .story-meta {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .story-date, .story-location {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  
+  .story-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  
+  /* Empty State */
+  .empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  }
+  
+  .empty-state p {
+    font-size: 1.1rem;
+    color: #6c757d;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Map Section */
+  .map-section {
+    position: sticky;
+    top: 2rem;
+    height: fit-content;
+  }
+  
+  .map-container {
+    height: 400px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  }
+  
+  /* Map Popup Styles */
+  .map-popup {
+    text-align: center;
+    max-width: 200px;
+  }
+  
+  .popup-image {
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-bottom: 0.5rem;
+  }
+  
+  .popup-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+    color: #2c3e50;
+  }
+  
+  .popup-description {
+    font-size: 0.9rem;
+    color: #555;
+    margin: 0 0 0.5rem 0;
+    line-height: 1.4;
+  }
+  
+  .popup-date {
+    font-size: 0.8rem;
+    color: #6c757d;
+    margin: 0 0 0.75rem 0;
+  }
+  
+  .popup-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+  }
+  
+  .popup-btn:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Icons */
+  .icon {
+    font-size: 0.9rem;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 1024px) {
+    .home-content {
+      grid-template-columns: 1fr;
+    }
+  
+    .map-section {
+      position: static;
+    }
+  
+    .map-container {
+      height: 300px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .header-content {
+      flex-direction: column;
+      text-align: center;
+    }
+  
+    .welcome-message {
+      font-size: 1.5rem;
+    }
+  
+    .story-card {
+      grid-template-columns: 1fr;
+    }
+  
+    .story-image {
+      width: 100%;
+      height: 200px;
+    }
+  
+    .story-content {
+      padding: 1rem;
+    }
+  
+    .home-content {
+      padding: 1rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .header-actions {
+      width: 100%;
+      justify-content: center;
+    }
+  
+    .btn {
+      flex: 1;
+      justify-content: center;
+      min-width: 0;
+    }
+  
+    .story-meta {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+  
+    .map-container {
+      height: 250px;
+    }
+  }
+  
+  /* Animation */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .story-card {
+    animation: fadeIn 0.5s ease-out;
+  }
+  
+  /* Leaflet custom styles */
+  .leaflet-popup-content-wrapper {
+    border-radius: 8px;
+  }
+  
+  .leaflet-popup-content {
+    margin: 10px;
+  }
+  
+  /* Loading shimmer effect */
+  .loading-shimmer {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+  }
+  
+  @keyframes loading {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+
+  /* Tambahkan CSS ini ke file styles/home.css */
+
+/* 
+ * Sematkan style untuk mengelola tampilan header
+ * saat berada di halaman home
+ */
+
+/* Sembunyikan header utama ketika di halaman home */
+body.home-page-active header[role="banner"] {
+  display: none !important;
+}
+
+/* Pastikan main content tidak memiliki padding atas tambahan di halaman home */
+body.home-page-active #main-content {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+
+/* Perbaikan style untuk header home */
+.home-header {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 100;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.welcome-message {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.header-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Perbaikan layout container untuk konten home */
+.home-container {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Responsif untuk layar kecil */
+@media (max-width: 768px) {
+  .header-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .header-actions {
+    width: 100%;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+}
+
+header[role="banner"].hidden {
+  display: none !important;
+}
+
+/* Body class-based header hiding - DIMODIFIKASI */
+.home-page-active header[role="banner"] {
+  display: none !important;
+}
+
+/* MENGHAPUS rule yang menyembunyikan header pada home-page-active */
+/* .home-page-active header[role="banner"] {
+  display: none !important;
+} */
+
+/* Main content adjustments when header is hidden */
+.main-content.no-header {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
