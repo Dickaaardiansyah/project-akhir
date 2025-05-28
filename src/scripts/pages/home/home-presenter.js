@@ -215,4 +215,9 @@ export default class HomePresenter {
   getUserData() {
     return this.model.getUserData();
   }
+
+  handleSessionExpiry() {
+    this.clearUserSession();
+    this.view.navigateToLogin();
+  }
 }

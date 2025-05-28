@@ -1,6 +1,8 @@
 import "../../../styles/home.css";
+import '../../../styles/story-detail-modal.css';
 import HomePresenter from './home-presenter.js';
 import CONFIG from '../../../scripts/config.js';
+import StoryDetailModal from './story-detail-modal.js';
 
 export default class HomePage {
   constructor() {
@@ -9,6 +11,7 @@ export default class HomePage {
     this.markers = [];
     this.searchTimeout = null;
     this.pushSubscription = null;
+    this.storyDetailModal = new StoryDetailModal();
   }
 
   async render() {
@@ -19,6 +22,9 @@ export default class HomePage {
           <h1 class="welcome-message">
             Selamat datang, <span id="username">User</span>!
           </h1>
+          <button class="hamburger-btn" aria-label="Buka menu navigasi" aria-expanded="false">
+            <span class="icon">☰</span>
+          </button>
           <div class="header-actions">
             <button id="subscribeNotificationBtn" class="btn btn-secondary" title="Berlangganan Notifikasi">
               <span class="icon">🔔</span>
@@ -42,6 +48,33 @@ export default class HomePage {
             </button>
           </div>
         </div>
+        <nav class="nav-drawer" aria-hidden="true">
+          <button class="close-drawer-btn" aria-label="Tutup menu navigasi">
+            <span class="icon">✕</span>
+          </button>
+          <div class="drawer-actions">
+            <button id="subscribeNotificationBtnDrawer" class="btn btn-secondary" title="Berlangganan Notifikasi">
+              <span class="icon">🔔</span>
+              Berlangganan
+            </button>
+            <button id="unsubscribeNotificationBtnDrawer" class="btn btn-secondary" title="Berhenti Berlangganan Notifikasi" style="display: none;">
+              <span class="icon">🔕</span>
+              Berhenti Berlangganan
+            </button>
+            <button id="addStoryBtnDrawer" class="btn btn-primary">
+              <span class="icon">+</span>
+              Tambah Story
+            </button>
+            <button id="refreshBtnDrawer" class="btn btn-secondary">
+              <span class="icon">↻</span>
+              Refresh
+            </button>
+            <button id="logoutBtnDrawer" class="btn btn-danger">
+              <span class="icon">↪</span>
+              Logout
+            </button>
+          </div>
+        </nav>
       </header>
 
       <!-- Home Content Area -->
@@ -104,6 +137,9 @@ export default class HomePage {
       this.updateUsernameDisplay();
       this.setupSkipToContent();
       this.initializeMap();
+      this.storyDetailModal.setOnLocationButtonClick((lat, lon) => {
+        this.centerMapOnLocation(lat, lon);
+      });
       this.setupEventListeners();
       console.log('HomePage: Menginisialisasi presenter...');
       await this.presenter.init();
@@ -134,8 +170,12 @@ export default class HomePage {
   disableNotificationButtons() {
     const subscribeBtn = document.getElementById('subscribeNotificationBtn');
     const unsubscribeBtn = document.getElementById('unsubscribeNotificationBtn');
+    const subscribeBtnDrawer = document.getElementById('subscribeNotificationBtnDrawer');
+    const unsubscribeBtnDrawer = document.getElementById('unsubscribeNotificationBtnDrawer');
     if (subscribeBtn) subscribeBtn.style.display = 'none';
     if (unsubscribeBtn) unsubscribeBtn.style.display = 'none';
+    if (subscribeBtnDrawer) subscribeBtnDrawer.style.display = 'none';
+    if (unsubscribeBtnDrawer) unsubscribeBtnDrawer.style.display = 'none';
     this.showError('Notifikasi push tidak didukung oleh browser ini');
   }
 
@@ -290,13 +330,19 @@ export default class HomePage {
   updateNotificationButtonState() {
     const subscribeBtn = document.getElementById('subscribeNotificationBtn');
     const unsubscribeBtn = document.getElementById('unsubscribeNotificationBtn');
-    if (subscribeBtn && unsubscribeBtn) {
+    const subscribeBtnDrawer = document.getElementById('subscribeNotificationBtnDrawer');
+    const unsubscribeBtnDrawer = document.getElementById('unsubscribeNotificationBtnDrawer');
+    if (subscribeBtn && unsubscribeBtn && subscribeBtnDrawer && unsubscribeBtnDrawer) {
       subscribeBtn.style.display = this.pushSubscription ? 'none' : 'inline-block';
       unsubscribeBtn.style.display = this.pushSubscription ? 'inline-block' : 'none';
+      subscribeBtnDrawer.style.display = this.pushSubscription ? 'none' : 'block';
+      unsubscribeBtnDrawer.style.display = this.pushSubscription ? 'block' : 'none';
       console.log('Status tombol notifikasi diperbarui:', {
         berlangganan: !!this.pushSubscription,
         tampilanSubscribeBtn: subscribeBtn.style.display,
         tampilanUnsubscribeBtn: unsubscribeBtn.style.display,
+        tampilanSubscribeBtnDrawer: subscribeBtnDrawer.style.display,
+        tampilanUnsubscribeBtnDrawer: unsubscribeBtnDrawer.style.display,
       });
     } else {
       console.warn('Tombol notifikasi tidak ditemukan');
@@ -426,10 +472,36 @@ export default class HomePage {
         });
       }
 
+      const subscribeBtnDrawer = document.getElementById('subscribeNotificationBtnDrawer');
+      if (subscribeBtnDrawer) {
+        subscribeBtnDrawer.addEventListener('click', () => {
+          console.log('Tombol Berlangganan (Drawer) diklik');
+          this.subscribeToPushNotifications();
+          this.toggleDrawer();
+        });
+      }
+
+      const unsubscribeBtnDrawer = document.getElementById('unsubscribeNotificationBtnDrawer');
+      if (unsubscribeBtnDrawer) {
+        unsubscribeBtnDrawer.addEventListener('click', () => {
+          console.log('Tombol Berhenti Berlangganan (Drawer) diklik');
+          this.unsubscribeFromPushNotifications();
+          this.toggleDrawer();
+        });
+      }
+
       const addStoryBtn = document.getElementById('addStoryBtn');
       if (addStoryBtn) {
         addStoryBtn.addEventListener('click', () => {
           this.presenter.onAddStoryClick();
+        });
+      }
+
+      const addStoryBtnDrawer = document.getElementById('addStoryBtnDrawer');
+      if (addStoryBtnDrawer) {
+        addStoryBtnDrawer.addEventListener('click', () => {
+          this.presenter.onAddStoryClick();
+          this.toggleDrawer();
         });
       }
 
@@ -440,10 +512,40 @@ export default class HomePage {
         });
       }
 
+      const refreshBtnDrawer = document.getElementById('refreshBtnDrawer');
+      if (refreshBtnDrawer) {
+        refreshBtnDrawer.addEventListener('click', () => {
+          this.presenter.onRefreshClick();
+          this.toggleDrawer();
+        });
+      }
+
       const logoutBtn = document.getElementById('logoutBtn');
       if (logoutBtn) {
         logoutBtn.addEventListener('click', () => {
           this.presenter.onLogoutClick();
+        });
+      }
+
+      const logoutBtnDrawer = document.getElementById('logoutBtnDrawer');
+      if (logoutBtnDrawer) {
+        logoutBtnDrawer.addEventListener('click', () => {
+          this.presenter.onLogoutClick();
+          this.toggleDrawer();
+        });
+      }
+
+      const hamburgerBtn = document.querySelector('.hamburger-btn');
+      if (hamburgerBtn) {
+        hamburgerBtn.addEventListener('click', () => {
+          this.toggleDrawer();
+        });
+      }
+
+      const closeDrawerBtn = document.querySelector('.close-drawer-btn');
+      if (closeDrawerBtn) {
+        closeDrawerBtn.addEventListener('click', () => {
+          this.toggleDrawer();
         });
       }
 
@@ -476,11 +578,23 @@ export default class HomePage {
           this.presenter.onRetryClick();
         });
       }
-
+      
       console.log('Pengaturan event listener selesai');
     } catch (error) {
       console.error('Kesalahan mengatur event listener:', error);
       this.showError('Gagal mengatur event listener');
+    }
+  }
+
+  toggleDrawer() {
+    const navDrawer = document.querySelector('.nav-drawer');
+    const hamburgerBtn = document.querySelector('.hamburger-btn');
+    if (navDrawer && hamburgerBtn) {
+      const isOpen = navDrawer.getAttribute('aria-hidden') === 'false';
+      navDrawer.setAttribute('aria-hidden', isOpen ? 'true' : 'false');
+      hamburgerBtn.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+      hamburgerBtn.querySelector('.icon').textContent = isOpen ? '☰' : '✕';
+      this.announceToScreenReader(isOpen ? 'Menu navigasi ditutup' : 'Menu navigasi dibuka');
     }
   }
 
@@ -560,6 +674,22 @@ export default class HomePage {
           const lat = parseFloat(e.target.getAttribute('data-lat'));
           const lon = parseFloat(e.target.getAttribute('data-lon'));
           this.presenter.onLocationButtonClick(lat, lon);
+        });
+      });
+
+      document.querySelectorAll('.story-card').forEach(card => {
+        card.addEventListener('click', (e) => {
+          const storyId = e.currentTarget.getAttribute('data-story-id');
+          this.presenter.onStoryCardClick(storyId);
+        });
+        // Add keyboard support
+        card.setAttribute('tabindex', '0');
+        card.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            const storyId = e.currentTarget.getAttribute('data-story-id');
+            this.presenter.onStoryCardClick(storyId);
+          }
         });
       });
       console.log(`Event listener diatur untuk ${document.querySelectorAll('.story-card').length} kartu story`);
@@ -692,7 +822,7 @@ export default class HomePage {
   }
 
   navigateToStoryDetail(storyId) {
-    window.location.hash = `#/story/${storyId}`;
+    this.storyDetailModal.show(storyId);
   }
 
   navigateToAddStory() {
