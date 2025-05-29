@@ -2,7 +2,26 @@
 import '../styles/styles.css';
 import App from './pages/app';
 
+async function registerServiceWorker() {
+  if ('serviceWorker' in navigator && 'PushManager' in window) {
+    try {
+      const registration = await navigator.serviceWorker.register('/sw.bundle.js');
+      console.log('Service Worker terdaftar dengan scope:', registration.scope);
+      return registration;
+    } catch (error) {
+      console.error('Pendaftaran Service Worker gagal:', error);
+      return null;
+    }
+  } else {
+    console.warn('Service Worker atau Push API tidak didukung');
+    return null;
+  }
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
+
+  await registerServiceWorker();
+  
   const app = new App({
     content: document.querySelector('#main-content'),
     drawerButton: document.querySelector('#drawer-button'),
@@ -11,6 +30,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   await app.renderPage();
 
+  // for demonstration purpose-only
+  console.log('Berhasil mendaftarkan service worker.');
   // ✅ SPA Routing Handling
   window.addEventListener('hashchange', async () => {
     // Prevent routing logic when skip link is used

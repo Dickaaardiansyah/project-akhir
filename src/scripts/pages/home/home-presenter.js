@@ -15,8 +15,6 @@ export default class HomePresenter {
       }
       await this.loadStories();
     } catch (error) {
-      console.error('Init error:', error);
-      this.view.showError('Gagal memuat halaman');
     }
   }
 
@@ -41,15 +39,6 @@ export default class HomePresenter {
     }
   }
 
-  determineErrorMessage(error) {
-    if (error.message.includes('token') || error.message.includes('authentication')) {
-      return 'Sesi Anda telah berakhir. Silakan login kembali.';
-    } else if (error.message.includes('Network') || error.message.includes('fetch')) {
-      return 'Tidak dapat terhubung ke server. Periksa koneksi internet Anda.';
-    } else {
-      return error.message || 'Terjadi kesalahan yang tidak diketahui';
-    }
-  }
 
   async subscribeToPush(subscription) {
     try {

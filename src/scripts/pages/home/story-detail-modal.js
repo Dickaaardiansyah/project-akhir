@@ -17,8 +17,6 @@ export default class StoryDetailModal {
         throw new Error(response.message || 'Failed to fetch story details');
       }
     } catch (error) {
-      console.error('Error fetching story details:', error);
-      this.showError(error.message || 'Gagal memuat detail story');
     }
   }
 

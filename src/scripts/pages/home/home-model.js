@@ -23,8 +23,6 @@ export default class HomeModel {
         this.filteredStories = [...this.stories];
         return this.stories;
       } else {
-        const errorMessage = storiesData?.message || 'Gagal memuat stories';
-        throw new Error(errorMessage);
       }
     } catch (error) {
       this.setError(error);

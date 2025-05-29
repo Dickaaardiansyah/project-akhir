@@ -133,7 +133,6 @@ export default class HomePage {
   async afterRender() {
     try {
       console.log('HomePage: Memulai afterRender');
-      await this.registerServiceWorker();
       this.updateUsernameDisplay();
       this.setupSkipToContent();
       this.initializeMap();
@@ -145,27 +144,10 @@ export default class HomePage {
       await this.presenter.init();
       console.log('HomePage: Presenter diinisialisasi');
     } catch (error) {
-      console.error('HomePage: Kesalahan di afterRender:', error);
-      this.showError('Gagal memuat halaman: ' + error.message);
     }
   }
 
-  async registerServiceWorker() {
-    if ('serviceWorker' in navigator && 'PushManager' in window) {
-      try {
-        const registration = await navigator.serviceWorker.register('/sw.bundle.js');
-        console.log('Service Worker terdaftar dengan scope:', registration.scope);
-        this.pushSubscription = await registration.pushManager.getSubscription();
-        this.updateNotificationButtonState();
-      } catch (error) {
-        console.error('Pendaftaran Service Worker gagal:', error);
-        this.showError('Gagal mendaftarkan Service Worker');
-      }
-    } else {
-      console.warn('Service Worker atau Push API tidak didukung');
-      this.disableNotificationButtons();
-    }
-  }
+  
 
   disableNotificationButtons() {
     const subscribeBtn = document.getElementById('subscribeNotificationBtn');
