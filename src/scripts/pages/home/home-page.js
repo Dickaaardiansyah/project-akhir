@@ -34,6 +34,10 @@ export default class HomePage {
               <span class="icon">🔕</span>
               Berhenti Berlangganan
             </button>
+            <button id="bookmarkBtnDrawer" class="btn btn-secondary">
+              <span class="icon">🔖</span>
+              Bookmark
+            </button>
             <button id="addStoryBtn" class="btn btn-primary">
               <span class="icon">+</span>
               Tambah Story
@@ -60,6 +64,10 @@ export default class HomePage {
             <button id="unsubscribeNotificationBtnDrawer" class="btn btn-secondary" title="Berhenti Berlangganan Notifikasi" style="display: none;">
               <span class="icon">🔕</span>
               Berhenti Berlangganan
+            </button>
+            <button id="bookmarkBtnDrawer" class="btn btn-secondary">
+              <span class="icon">🔖</span>
+              Bookmark
             </button>
             <button id="addStoryBtnDrawer" class="btn btn-primary">
               <span class="icon">+</span>
@@ -560,12 +568,32 @@ export default class HomePage {
           this.presenter.onRetryClick();
         });
       }
+
+      const bookmarkBtn = document.getElementById('bookmarkBtnDrawer');
+    if (bookmarkBtn) {
+      bookmarkBtn.addEventListener('click', () => {
+        console.log('Bookmark button (header) clicked');
+        window.location.hash = '#/bookmark';
+      });
+    }
+
+    // Bookmark button in drawer (same ID, assuming it's intentional)
+    const bookmarkBtnDrawer = document.getElementById('bookmarkBtnDrawer');
+    if (bookmarkBtnDrawer) {
+      bookmarkBtnDrawer.addEventListener('click', () => {
+        console.log('Bookmark button (drawer) clicked');
+        window.location.hash = '#/bookmark';
+        this.toggleDrawer();
+      });
+    }
       
       console.log('Pengaturan event listener selesai');
     } catch (error) {
       console.error('Kesalahan mengatur event listener:', error);
       this.showError('Gagal mengatur event listener');
     }
+
+    
   }
 
   toggleDrawer() {
